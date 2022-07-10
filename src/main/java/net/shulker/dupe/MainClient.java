@@ -24,15 +24,18 @@ public class MainClient implements ClientModInitializer {
             if (screen instanceof ShulkerBoxScreen) {
                 ScreenKeyboardEvents.afterKeyPress(screen).register((screen1, key, scancode, modifier) -> {
                     if (!shouldDupe || !shouldDupeAll) {
-                        if (Screen.hasControlDown() && !Screen.hasShiftDown() && key == GLFW.GLFW_KEY_D) {
-                            if (shouldDupeAll) shouldDupeAll = false;
-                            shouldDupe = true;
-                            System.out.println("Dupe");
+                        if (Screen.hasControlDown() && key == GLFW.GLFW_KEY_D) {
+                            if (Screen.hasShiftDown()) {
+                                if (shouldDupe) shouldDupe = false;
+                                shouldDupeAll = true;
+                            } else {
+                                if (shouldDupeAll) shouldDupeAll = false;
+                                shouldDupe = true;
+                            }
                         }
                         if (Screen.hasShiftDown() && !Screen.hasControlDown() && key == GLFW.GLFW_KEY_D) {
                             if (shouldDupe) shouldDupe = false;
                             shouldDupeAll = true;
-                            System.out.println("Dupe All");
                         }
                     }
                 });
