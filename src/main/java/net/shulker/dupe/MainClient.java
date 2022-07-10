@@ -1,31 +1,46 @@
 package net.shulker.dupe;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.fabricmc.api.ClientModInitializer;
-import net.minecraft.block.Blocks;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.minecraft.block.ShulkerBoxBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.ShulkerBoxScreen;
 import net.minecraft.screen.ShulkerBoxScreenHandler;
-import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.tag.BlockTags;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Direction;
+import org.lwjgl.glfw.GLFW;
 
-import static net.shulker.dupe.SharedVariables.*;
+import static net.shulker.dupe.SharedVariables.shouldDupe;
+import static net.shulker.dupe.SharedVariables.shouldDupeAll;
 import static net.shulker.dupe.Util.CLIENT;
 import static net.shulker.dupe.Util.log;
 
 public class MainClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        ScreenEvents.AFTER_INIT.register((client, screen, player, context) -> {
+            if (screen instanceof ShulkerBoxScreen) {
+                ScreenKeyboardEvents.afterKeyPress(screen).register((screen1, key, scancode, modifier) -> {
+                    if (!shouldDupe || !shouldDupeAll) {
+                        if (Screen.hasControlDown() && !Screen.hasShiftDown() && key == GLFW.GLFW_KEY_D) {
+                            if (shouldDupeAll) shouldDupeAll = false;
+                            shouldDupe = true;
+                            System.out.println("Dupe");
+                        }
+                        if (Screen.hasShiftDown() && !Screen.hasControlDown() && key == GLFW.GLFW_KEY_D) {
+                            if (shouldDupe) shouldDupe = false;
+                            shouldDupeAll = true;
+                            System.out.println("Dupe All");
+                        }
+                    }
+                });
+            }
+        });
     }
 
     public static boolean fra = true;
-    public static int thex = 0;
-    public static int they = 0;
 
     public static void setFra(boolean fra) {
         MainClient.fra = fra;
