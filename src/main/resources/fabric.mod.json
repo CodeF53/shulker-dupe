@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "id": "shulker-dupe",
+  "id": "shulker-tool",
   "version": "${version}",
 
-  "name": "Shulker Dupe",
-  "description": "A mod that makes it easier to perform the shulker dupe.",
+  "name": "Shulker Tool",
+  "description": "A mod that makes it easier to manage items with shulkers.",
   "authors": [
     "Coderx_Gamer",
     "Ran"
@@ -15,16 +15,16 @@
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/shulker-dupe/icon.png",
+  "icon": "assets/shulker-tool/icon.png",
 
   "environment": "client",
   "entrypoints": {
     "client": [
-      "net.shulker.dupe.MainClient"
+      "net.shulker.tool.MainClient"
     ]
   },
   "mixins": [
-    "shulker-dupe.mixins.json"
+    "shulker-tool.mixins.json"
   ],
 
   "depends": {
